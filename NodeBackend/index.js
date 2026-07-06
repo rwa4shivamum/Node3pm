@@ -1,36 +1,13 @@
 import express from 'express';
-const app = express();
+import {connect} from './configuration/mongoConnect.js'
+import { crudRouter } from './routes/crudroutes.js';
+import { add } from './add.js';
+const app = express()
 
 app.use(express.json());
-
-app.get("/getData", async(req, res)=>{
-    try {
-        throw new Error("Error is throwing")
-        res.json({
-            "name":"shivam",
-            "email":"shivam@gmail.com"
-        })
-        console.log("heer")
-    } catch (error) {
-        res.json({
-            "message":`${error}`
-        })
-    }
-})
-
-app.get("/getjsonData", async (req, res) => {
-  try {
-    res.json({
-      name: "shivajkasnd",
-      email: "shivamsdfsfsf@gmail.com",
-    });
-  } catch (error) {
-    res.json({
-        messsage:`Error ${error}`
-    })
-  }
-});
-
+// add()
+app.use("/api", crudRouter)
+await connect()
 app.listen(8080, ()=>{
     console.log(`Server is running on this 8080`)
 })
