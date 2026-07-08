@@ -1,11 +1,10 @@
 import express from 'express';
 import {connect} from './configuration/mongoConnect.js'
 import { crudRouter } from './routes/crudroutes.js';
-import { add } from './add.js';
 const app = express()
 
 app.use(express.json());
-// add()
+
 app.use("/api", crudRouter)
 await connect()
 app.listen(8080, ()=>{
