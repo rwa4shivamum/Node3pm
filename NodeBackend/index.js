@@ -6,6 +6,7 @@ const app = express()
 app.use(express.json());
 
 app.use("/api", crudRouter)
+
 await connect()
 app.listen(8080, ()=>{
     console.log(`Server is running on this 8080`)

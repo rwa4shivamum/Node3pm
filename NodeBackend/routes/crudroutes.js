@@ -1,7 +1,13 @@
 import express, { Router } from 'express'
-import { createStudents } from '../controllers/createStudents.js'
+import { createManyStudents, createStudents, getAllStudents, getStudents } from '../controllers/createStudents.js'
 
 
 export const crudRouter = Router()
 
-crudRouter.use("/create", createStudents)
+crudRouter.post("/create", createStudents)
+
+crudRouter.post("/insertmany", createManyStudents)
+
+crudRouter.get("/getSingleStudent/:id", getStudents);
+
+crudRouter.get("/getAll", getAllStudents);
