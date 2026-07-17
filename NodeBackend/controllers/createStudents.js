@@ -50,9 +50,9 @@ export const createManyStudents = async (req, res) => {
 
 export const getStudents = async (req, res) => {
   try {
-    const {id} = req.params
-    const unid = id.split("=")[1]
-    const data = await Student.findById({_id:`${unid}`});
+    const { id } = req.params;
+    const unid = id.split("=")[1];
+    const data = await Student.findById({ _id: `${unid}` });
     res.json({
       status: true,
       message: "Response getting succusfully",
@@ -65,30 +65,33 @@ export const getStudents = async (req, res) => {
 
 export const getAllStudents = async (req, res) => {
   try {
-    const data = await Student.find();
-    let { search, sort, order } = req.query;
+    const { search, sort, order} = req.query;
 
+    // 🔍 SEARCH FILTER
     let filter = {};
-
     if (search) {
       filter.name = { $regex: search, $options: "i" };
     }
 
+    // 🔃 SORT OPTION
     let sortOption = {};
     if (sort) {
       sortOption[sort] = order === "desc" ? -1 : 1;
     }
 
-    const users = await Student.find(filter).sort(sortOption);
-    res.json({
+    // 📄 QUERY WITH SEARCH + SORT
+    const students = await Student.find(filter)
+      .sort(sortOption)
+
+    res.status(200).json({
       status: true,
-      message: "Response getting succusfully",
-      data: [data],
+      message: "Students fetched successfully",
+      data: students,
     });
   } catch (error) {
-    res.json({
-      success: false,
-      message: `Error getting in getAllStudents ${error.message}`,
+    res.status(500).json({
+      status: false,
+      message: error.message,
     });
   }
 };
