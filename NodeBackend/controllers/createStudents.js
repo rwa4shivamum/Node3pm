@@ -95,3 +95,68 @@ export const getAllStudents = async (req, res) => {
     });
   }
 };
+
+export const updateSingleStudent = async (req, res) => {
+  try {
+    const {id} = req.query;
+    if(!id){
+      res.json({
+        status:false,
+        message:"Id is required"
+      })
+    }
+    const findSingleStudent = await Student.findById({ _id: `${id}` });
+    if (!findSingleStudent) {
+      res.json({
+        status: false,
+        message: "Student not found",
+      });
+    }
+
+    const updateSingleStudent = await Student.findByIdAndUpdate(id,req.body,{new:true});
+    res.json({
+      status:true,
+      message:[`Student ${id} got updated`,updateSingleStudent]
+    })
+  } catch (error) {
+    res.json({
+      status:false,
+      message:`Error getting in update the student ${error.message}`
+    })
+    console.log(error)
+  }
+}
+
+
+export const deleteSingleStudent = async (req, res) => {
+  try {
+    const {id} = req.query;
+    if(!id){
+      res.json({
+        status:false,
+        message:"Id is required"
+      })
+    }
+
+    const findSingleStudent = await Student.findById({ _id: `${id}` });
+    if(!findSingleStudent){
+      res.json({
+        status:false,
+        message:"Student NOt Found"
+      })
+    }
+
+    const deleteSingleStudent = await Student.findByIdAndDelete(id)
+
+    res.json({
+      status:true,
+      message:"Student got Deleted"
+    })
+
+  } catch (error) {
+    res.json({
+      status:false,
+      message:`Error in Deleting the student ${error.message}`
+    })
+  }
+}
